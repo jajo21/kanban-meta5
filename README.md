@@ -7,9 +7,9 @@ till inloggnings-sidan. Om man loggar in igen ska ens sparade kort finnas kvar.
 - Genomgående engelska i alla funktioner och variabler. Kommentarer kan göras på svenska.
 - Är det fler än ett ord i variabler och funktioner används camelCase.
 - Över varje funktion ska det finnas en kommentar med förklaring av funktionen.
-    Vid större funktion, ha fler kommentarsförklaringar i funktionen.
+    Vid större funktion, ha fler kodförklaringar i funktionen.
 - Indentering sker med tab, ej med mellanslag.
-- Namnge alla sidor (exempel: kanban-sida.html) bara små bokstäver, samt bindesträck ifall det är fler än ett ord.
+- Namnge alla sidor (exempel: kanban-sida.html) med små bokstäver, samt bindesträck ifall det är fler än ett ord.
 - Namnge vavariabler så det är tydligt vad dem gör t.ex: "loginButton".
 
 Trello:
