@@ -63,8 +63,8 @@ function logIn(user, psw) {
 
             if (user == data[i].user && psw == data[i].password) {
                 console.log("Korrekt");
-                localStorage.setItem("username", i);
-                localStorage.setItem("psw", data[i].password);
+                localStorage.setItem("username", data[i].user);
+                //localStorage.setItem("psw", data[i].password);
 
             }
             else {
@@ -129,5 +129,3 @@ function createDiv() {
 }
 
 checkUser();
-
-
