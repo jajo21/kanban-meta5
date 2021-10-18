@@ -1,4 +1,11 @@
+$fontFamily: sans-serif;
+$borderRadius: 10px;
+$bgColorContainer: antiquewhite;
+$bgColorButtonHover: lightcyan;
+$bgColorButton: lightblue;
+
 * {
+  font-family: $fontFamily;
   margin: 0;
   padding: 0;
 }
@@ -15,10 +22,10 @@ body {
   }
   .kanbanContainer {
     display: flex;
-    background-color: antiquewhite;
+    background-color: $bgColorContainer;
     padding: 10px;
     margin-top: 10px;
-    font-family: sans-serif;
+    font-family: $fontFamily;
     border-radius: 10px;
     .column {
       display: flex;
@@ -60,17 +67,60 @@ body {
       .addButton {
         display: flex;
         padding: 5px;
-        background-color: lightblue;
+        background-color: $bgColorButton;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         margin-top: 10px;
         &:hover {
-          background-color: lightcyan;
+          background-color: $bgColorButtonHover;
         }
         .fas {
           margin-right: 5px;
         }
+      }
+    }
+  }
+}
+
+#body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    text-align: center;
+  }
+  #div {
+    background-color: $bgColorContainer;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: $borderRadius;
+    width: 60%;
+    #user {
+      height: 50px;
+      border: none;
+      border-radius: $borderRadius;
+      margin: 0 10px 0 10px;
+    }
+    #psw {
+      height: 50px;
+      border: none;
+      border-radius: $borderRadius;
+      margin: 0 10px 0 10px;
+    }
+    button {
+      margin: 10px;
+      height: 50px;
+      padding: 0 20px 0 20px;
+      background-color: $bgColorButton;
+      border: none;
+      border-radius: $borderRadius;
+      font-family: $fontFamily;
+      &:hover {
+        background-color: $bgColorButtonHover;
       }
     }
   }
