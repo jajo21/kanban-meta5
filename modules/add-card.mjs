@@ -1,6 +1,46 @@
+export function addCard() {
+    const addButton = document.getElementsByClassName("addButton");
+    const columns = document.getElementsByClassName("column");
+    console.log(addButton);
+    
+    for (let i = 0; i < addButton.length; i++) {
+        addButton[i].addEventListener("click", () => {
+            const textAreaDiv = document.createElement("div");
+            addButton[i].before(textAreaDiv);
+            const textArea = document.createElement("textarea");
+            const saveButton = document.createElement("button");
+            saveButton.className = "saveButton";
+            saveButton.textContent = "Spara";
+            saveButton.id = i;
 
-export function dataFunction() {    
-/*  Här vi funktionen som sparar in datan som vi vill ha in i 
+            textAreaDiv.appendChild(textArea);
+            textAreaDiv.appendChild(saveButton);
+
+            saveButton.addEventListener("click", ()=> {
+                textAreaDiv.id = getRandomInt(10000);
+                const savedText = document.createElement("div");
+                savedText.innerText = textArea.value;
+                textAreaDiv.before(savedText);
+                saveButton.remove();
+                textArea.remove();
+                
+
+                const dataArray = readData();
+
+                if (i+1 === dataArray[i].id) {
+                    dataArray[i].items.push({"id":getRandomInt(10000), "text":textArea.value});
+                    save(dataArray);
+                    console.log(dataArray);
+                }
+            });
+        });
+    }  
+
+    function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+
+    /*  Här vi funktionen som sparar in datan som vi vill ha in i 
     localstorage. I dom funktioner som vi har något som ska till 
     localstorage så måste vi ha så att den sparas till en 
     variabel som heter "data". 
@@ -67,7 +107,7 @@ function pushData(data) {
 
 
 }
-pushData("Hejhå");
+
+
 
 }
-
