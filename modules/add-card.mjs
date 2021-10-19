@@ -1,8 +1,6 @@
 export function addCard() {
-    const addButton = document.getElementsByClassName("addButton");
-    const columns = document.getElementsByClassName("column");
-    console.log(addButton);
     
+    const addButton = document.getElementsByClassName("addButton");  
     for (let i = 0; i < addButton.length; i++) {
         addButton[i].addEventListener("click", () => {
             const textAreaDiv = document.createElement("div");
@@ -18,12 +16,9 @@ export function addCard() {
 
             saveButton.addEventListener("click", ()=> {
                 textAreaDiv.id = getRandomInt(10000);
-                const savedText = document.createElement("div");
-                savedText.innerText = textArea.value;
-                textAreaDiv.before(savedText);
+                textAreaDiv.innerText = textArea.value;
                 saveButton.remove();
                 textArea.remove();
-                
 
                 const dataArray = readData();
 
@@ -78,36 +73,4 @@ function readData() {
     }
     return JSON.parse(json);
 }
-
-/*  Funktion som pushar in data i en array och sparar */
-function pushData(data) {
-    const dataArray = readData();
-
-    for(let i = 0; i < dataArray.length; i++) {
-        if (dataArray[i].id === 1) {
-            dataArray[i].items.push({"id":getRandomInt(10000), "todo":data});
-        } 
-        else if (dataArray[i].id === 2) {
-            dataArray[i].items.push({"id":getRandomInt(10000), "todo":data});
-        }
-        else if (dataArray[i].id === 3) {
-            dataArray[i].items.push({"id":getRandomInt(10000), "todo":data});
-        }
-        else {
-            dataArray[i].items.push({"id":getRandomInt(10000), "todo":data});
-        }
-    }
-
-    console.log(dataArray);
-
-    /* Funktion som genererar random tal */
-    function getRandomInt(max) {
-        return Math.floor(Math.random() * max);
-      }
-
-
-}
-
-
-
 }
