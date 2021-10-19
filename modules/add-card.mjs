@@ -1,59 +1,134 @@
 export function addCard() {
 
-    const addButton = document.getElementsByClassName("addButton");
-    for (let i = 0; i < addButton.length; i++) {
-        addButton[i].addEventListener("click", () => {
-            const textAreaDiv = document.createElement("div");
-            textAreaDiv.setAttribute("draggable", true);
-            addButton[i].before(textAreaDiv);
+    /*  Funktion som skriver ut sparade kort om användaren inte har tagit bort dessa. */
+    function readCard() {
+        const data = localStorage.getItem("kanbanData");
+        if (!data) {
+            addCardElements();
+        }
+        else {
+            const dataArray = readData();
+            for (let i = 0; i < dataArray.length; i++) {
+                for (let j = 0; j < dataArray[i].items.length; j++) {
+                    if (dataArray[i].items[j] != null) {
+                        const addButton = document.getElementsByClassName("addButton");
+                        const textAreaDiv = document.createElement("div");
+                        addButton[i].before(textAreaDiv);
+                        textAreaDiv.id = dataArray[i].items[j].id;
+                        textAreaDiv.className = "textDiv";
+                        const textContentDiv = document.createElement("p");
+                        textContentDiv.innerText = dataArray[i].items[j].text;
+                        textAreaDiv.appendChild(textContentDiv);
+                        addEditButtons(textAreaDiv, textContentDiv, textAreaDiv.id, i);
+                        textAreaDiv.setAttribute("draggable", true);
+                        textAreaDiv.style.cursor = "pointer";
+                        dragAndDrop();
+                    }
+                }
+            }
+            addCardElements();
+        }
+    }
+    readCard();
+
+    /*  Funktion för skapandet av alla element som behövs för att skapa nya kort. */
+    function addCardElements() {
+        const addButton = document.getElementsByClassName("addButton");
+        for (let i = 0; i < addButton.length; i++) {
+            addButton[i].addEventListener("click", () => {
+                const textAreaDiv = document.createElement("div");
+                textAreaDiv.setAttribute("draggable", true);
+                addButton[i].before(textAreaDiv);
+                const textArea = document.createElement("textarea");
+                const saveButton = document.createElement("button");
+                saveButton.className = "saveButton";
+                saveButton.textContent = "Save";
+                saveButton.id = i;
+                textAreaDiv.appendChild(textArea);
+                textAreaDiv.appendChild(saveButton);
+
+                saveButton.addEventListener("click", () => {
+                    textAreaDiv.id = getRandomInt(10000);
+                    const textContentDiv = document.createElement("p");
+                    textContentDiv.innerText = textArea.value;
+                    textAreaDiv.className = "textDiv";
+                    textAreaDiv.style.cursor = "pointer";
+
+                    dragAndDrop();
+
+                    textAreaDiv.appendChild(textContentDiv)
+                    textAreaDiv.className = "textDiv";
+                    saveButton.remove();
+                    textArea.remove();
+                    addEditButtons(textAreaDiv, textContentDiv, textAreaDiv.id, i);
+                    const dataArray = readData();
+
+                    if (i + 1 === dataArray[i].id) {
+                        dataArray[i].items.push({ "id": textAreaDiv.id, "text": textArea.value });
+                        save(dataArray);
+                    }
+                });
+            });
+        }
+    }
+    /*  Funktion som skapar knappar som kan redigera och radera sparade kort. */
+    function addEditButtons(divArea, divText, divId, i) {
+        const removeButton = document.createElement("button");
+        const editButton = document.createElement("button");
+        divArea.appendChild(removeButton);
+        divArea.appendChild(editButton);
+        removeButton.innerText = "x";
+        editButton.innerText = "edit";
+        removeButton.addEventListener("click", () => {
+
+            const dataArray = readData();
+            const findArray = dataArray[i].items.find(a => a.id === divId);
+            const place = dataArray[i].items.indexOf(findArray);
+            dataArray[i].items.splice(place, 1);
+            const dataString = JSON.stringify(dataArray);
+            localStorage.setItem("kanbanData", dataString);
+            divArea.remove();
+
+        });
+        editButton.addEventListener("click", () => {
             const textArea = document.createElement("textarea");
-            const saveButton = document.createElement("button");
-            saveButton.className = "saveButton";
-            saveButton.textContent = "Spara";
-            saveButton.id = i;
+            const textValue = divText.innerText;
+            textArea.innerText = textValue;
+            divArea.appendChild(textArea);
+            editButton.remove();
+            removeButton.remove();
+            divText.innerText = "";
+            const newSaveButton = document.createElement("button");
+            newSaveButton.innerText = "Save";
+            divArea.appendChild(newSaveButton);
 
-            textAreaDiv.appendChild(textArea);
-            textAreaDiv.appendChild(saveButton);
-
-            saveButton.addEventListener("click", () => {
-                textAreaDiv.id = getRandomInt(10000);
-                textAreaDiv.innerText = textArea.value;
-                textAreaDiv.className = "textDiv";
-                textAreaDiv.style.cursor = "pointer";
-
-                dragAndDrop();
-
-                saveButton.remove();
+            newSaveButton.addEventListener("click", () => {
+                divText.innerText = textArea.value;
                 textArea.remove();
+                newSaveButton.remove();
+                addEditButtons(divArea, divText, divId, i);
 
                 const dataArray = readData();
+                const findArray = dataArray[i].items.find(a => a.id === divId);
+                findArray.text = textArea.value;
+                const dataString = JSON.stringify(dataArray);
+                localStorage.setItem("kanbanData", dataString);
+            })
 
-                if (i + 1 === dataArray[i].id) {
-                    dataArray[i].items.push({ "id": getRandomInt(10000), "text": textArea.value });
-                    save(dataArray);
-                    console.log(dataArray);
-                }
-            });
         });
     }
-
+    /*  Funktion för att skapa radom numer till ids */
     function getRandomInt(max) {
         return Math.floor(Math.random() * max);
     }
 
-    /*  Här vi funktionen som sparar in datan som vi vill ha in i 
-        localstorage. I dom funktioner som vi har något som ska till 
-        localstorage så måste vi ha så att den sparas till en 
-        variabel som heter "data". 
-    */
+    /*  Funktion för att spara vald data i localStorage */
     function save(data) {
         localStorage.setItem("kanbanData", JSON.stringify(data));
     }
 
-    /*  Funktionen för att läsa ut datan som finns i localstorage 
-        men det skapar arrays för alla kolumner även om det är tomt 
-        i localstorage för att alltid ha tillgång till dom ids.
-    */
+    /*  Funktion för att läsa och returnera data från localStorage samt skapa en array
+        för alla Kolumner om localStorage är tomt. */
     function readData() {
         const json = localStorage.getItem("kanbanData");
 
@@ -79,7 +154,6 @@ export function addCard() {
         }
         return JSON.parse(json);
     }
-
     function dragAndDrop() {
         console.log("Drag Drop Scriptet körs");
 
@@ -146,5 +220,4 @@ export function addCard() {
         }
 
     }
-
 }
