@@ -1,5 +1,5 @@
 export function addCard() {
-    
+
     const addButton = document.getElementsByClassName("addButton");  
     for (let i = 0; i < addButton.length; i++) {
         addButton[i].addEventListener("click", () => {
@@ -17,6 +17,7 @@ export function addCard() {
             saveButton.addEventListener("click", ()=> {
                 textAreaDiv.id = getRandomInt(10000);
                 textAreaDiv.innerText = textArea.value;
+                textAreaDiv.className = "textDiv";
                 saveButton.remove();
                 textArea.remove();
 
@@ -35,7 +36,7 @@ export function addCard() {
         return Math.floor(Math.random() * max);
     }
 
-    /*  Här vi funktionen som sparar in datan som vi vill ha in i 
+/*  Här vi funktionen som sparar in datan som vi vill ha in i 
     localstorage. I dom funktioner som vi har något som ska till 
     localstorage så måste vi ha så att den sparas till en 
     variabel som heter "data". 
