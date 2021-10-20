@@ -42,6 +42,7 @@ export function addCard() {
                 addButton[i].before(textAreaDiv);
                 const textArea = document.createElement("textarea");
                 const saveButton = document.createElement("button");
+                addButton[i].classList.add("hide");
                 saveButton.className = "saveButton";
                 saveButton.textContent = "Save";
                 saveButton.id = i;
@@ -55,6 +56,7 @@ export function addCard() {
                     textContentDiv.classList.add("label");
                     textAreaDiv.className = "textDiv";
                     textAreaDiv.style.cursor = "pointer";
+                    addButton[i].classList.remove('hide')
 
                     dragAndDrop();
 
