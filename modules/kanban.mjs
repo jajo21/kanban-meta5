@@ -1,4 +1,4 @@
-export function addCard() {
+export function kanban() {
 
     /*  Funktion som skriver ut sparade kort om användaren inte har tagit bort dessa. */
     function readCard() {
