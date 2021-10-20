@@ -17,6 +17,7 @@ export function addCard() {
                         textAreaDiv.id = dataArray[i].items[j].id;
                         textAreaDiv.className = "textDiv";
                         const textContentDiv = document.createElement("p");
+                        textContentDiv.classList.add("label");
                         textContentDiv.innerText = dataArray[i].items[j].text;
                         textAreaDiv.appendChild(textContentDiv);
                         addEditButtons(textAreaDiv, textContentDiv, textAreaDiv.id, i);
@@ -51,6 +52,7 @@ export function addCard() {
                     textAreaDiv.id = getRandomInt(10000);
                     const textContentDiv = document.createElement("p");
                     textContentDiv.innerText = textArea.value;
+                    textContentDiv.classList.add("label");
                     textAreaDiv.className = "textDiv";
                     textAreaDiv.style.cursor = "pointer";
 
@@ -154,22 +156,20 @@ export function addCard() {
         }
         return JSON.parse(json);
     }
+
     function dragAndDrop() {
-        console.log("Drag Drop Scriptet körs");
-
+        /* Lägg till nödvändiga eventListerners i kolumner och textDivar. */
         const columns = document.getElementsByClassName("column");
-
         const textDivs = document.getElementsByClassName("textDiv");
 
         for (const textDiv of textDivs) {
-            if (textDiv.getAttribute('listener') !== 'true') {      // Kolla först om det redan finns event listener
+            if (textDiv.getAttribute('listener') !== 'true') {      /* Kolla först om det redan finns eventListenernes */
                 textDiv.addEventListener("dragstart", dragStart);
                 textDiv.setAttribute('listener', 'true');
                 textDiv.addEventListener("drop", dragDrop);
             }
         }
 
-        // Loop Through Other Cards And Call Drag Events
         for (const column of columns) {
             column.addEventListener("dragover", dragOver);
             column.addEventListener("dragenter", dragEnter);
@@ -177,47 +177,50 @@ export function addCard() {
             column.addEventListener("drop", dragDrop);
         }
 
-        // Begin dragging box
+        /* Nu drar vi! */
         function dragStart(event) {
             event.dataTransfer.setData('text/plain', event.target.id);
             const draggedElement = event.currentTarget;
-            //   draggedElement.style.backgroundColor = 'pink';
-
-            console.log("Drag börjar, objekt id: " + draggedElement.id);
         }
 
+        /* Vi vill inte ha standard-beteendet när man drar element. */
         function dragOver(e) {
             e.preventDefault();
-            //    console.log("Over");
         }
         function dragEnter(e) {
             e.preventDefault();
-            //    console.log("Enter");
         }
         function dragLeave(e) {
             e.preventDefault();
-            //    console.log("Leave");
         }
 
-        // Release box
+        /* Släpp elementet in i en kolumn. */
         function dragDrop(event) {
-
-            const id = event.dataTransfer.getData("text");
+            const id = event.dataTransfer.getData("text");            /* Hämta ID attributen ifrån elementet vi släpar på. */
             const draggedElement = document.getElementById(id);
-            console.log(id);
-            const dropzone = event.target;
+            const dropzone = event.target;                           /* Även ID på våran dropzone, alltså objektet som vi ska parenta draggedElement under. */
 
+            /*  Om dropzone är en column så lägg den näst sist i 
+                children-listan. Allra sist i column ska nämligen vara addButton.*/
             if (dropzone.classList.contains("column")) {
                 const lastChild = dropzone.children.length;
                 dropzone.insertBefore(draggedElement, dropzone.children[lastChild - 1]);
             }
 
-            if (dropzone.classList.contains('textDiv')) {               // If target is a 'box' itself then place the dropped item before it.
-                const insertNode = dropzone.parentNode.insertBefore(draggedElement, dropzone);
+            /*  Är dropzone en textDiv så placera elementet innan den.*/
+            if (dropzone.classList.contains('textDiv')) {
+                const column = dropzone.parentNode;
+                const insertNode = column.insertBefore(draggedElement, dropzone);
             }
 
+            /*  I det fall dropzone är en paragraf så leta upp dess textDiv och kolumn. 
+                Lägg sedan elementet före den textDiven.*/
+            if (dropzone.classList.contains('label')) {
+                const textDiv = dropzone.parentNode;
+                const column = textDiv.parentNode;
+                const insertNode = column.insertBefore(draggedElement, textDiv);
+            }
             event.dataTransfer.clearData();
         }
-
     }
 }
