@@ -72,8 +72,8 @@ body {
         display: none;
       }
 
-      p,
-      textarea {
+      p
+       {
         resize: none;
         min-width: 80%;
         background-color: $bgColorContainer;
@@ -82,10 +82,22 @@ body {
         padding: 10px;
         border-radius: 10px;
       }
-
       .textDiv {
+        .label {
+          background-color: $bgColorContainer;
+          word-wrap: break-word;
+          border: none;
+          padding: 10px;
+          border-radius: 10px;
+        }
         textarea {
-          max-width: 80%;
+          min-width: 80%;
+          background-color: $bgColorContainer;
+          word-wrap: break-word;
+          border: none;
+          padding: 10px;
+          border-radius: 10px;
+          resize: none;
         }
         button {
           width: 30%;
