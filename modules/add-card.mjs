@@ -102,12 +102,14 @@ export function addCard() {
             editButton.remove();
             removeButton.remove();
             divText.innerText = "";
+            divText.classList.add('hide');
             const newSaveButton = document.createElement("button");
             newSaveButton.innerText = "Save";
             divArea.appendChild(newSaveButton);
 
             newSaveButton.addEventListener("click", () => {
                 divText.innerText = textArea.value;
+                divText.classList.remove('hide');
                 textArea.remove();
                 newSaveButton.remove();
                 addEditButtons(divArea, divText, divId, i);
@@ -188,12 +190,14 @@ export function addCard() {
         /* Vi vill inte ha standard-beteendet när man drar element. */
         function dragOver(e) {
             e.preventDefault();
+            this.classList.add("hover");
         }
         function dragEnter(e) {
             e.preventDefault();
         }
         function dragLeave(e) {
             e.preventDefault();
+            this.classList.remove("hover");
         }
 
         /* Släpp elementet in i en kolumn. */
@@ -224,6 +228,7 @@ export function addCard() {
             }
             // 
             event.dataTransfer.clearData();
+            this.classList.remove("hover");
 
             const dataArray = readData();
             for (let i = 0; i < dataArray.length; i++) {
