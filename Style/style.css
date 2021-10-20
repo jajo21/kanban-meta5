@@ -95,8 +95,7 @@ body .kanbanContainer .column .hide {
   display: none;
 }
 
-body .kanbanContainer .column p,
-body .kanbanContainer .column textarea {
+body .kanbanContainer .column p {
   resize: none;
   min-width: 80%;
   background-color: antiquewhite;
@@ -106,8 +105,22 @@ body .kanbanContainer .column textarea {
   border-radius: 10px;
 }
 
+body .kanbanContainer .column .textDiv .label {
+  background-color: antiquewhite;
+  word-wrap: break-word;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+}
+
 body .kanbanContainer .column .textDiv textarea {
-  max-width: 80%;
+  min-width: 80%;
+  background-color: antiquewhite;
+  word-wrap: break-word;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  resize: none;
 }
 
 body .kanbanContainer .column .textDiv button {
