@@ -16,7 +16,7 @@ export function addCard() {
                         addButton[i].before(textAreaDiv);
                         textAreaDiv.id = dataArray[i].items[j].id;
                         textAreaDiv.className = "textDiv";
-                        const textContentDiv = document.createElement("p");
+                        const textContentDiv = document.createElement("div");
                         textContentDiv.classList.add("label");
                         textContentDiv.innerText = dataArray[i].items[j].text;
                         textAreaDiv.appendChild(textContentDiv);
@@ -51,7 +51,7 @@ export function addCard() {
 
                 saveButton.addEventListener("click", () => {
                     textAreaDiv.id = getRandomInt(10000);
-                    const textContentDiv = document.createElement("p");
+                    const textContentDiv = document.createElement("div");
                     textContentDiv.innerText = textArea.value;
                     textContentDiv.classList.add("label");
                     textAreaDiv.className = "textDiv";
@@ -220,9 +220,49 @@ export function addCard() {
             if (dropzone.classList.contains('label')) {
                 const textDiv = dropzone.parentNode;
                 const column = textDiv.parentNode;
-                const insertNode = column.insertBefore(draggedElement, textDiv);
+                column.insertBefore(draggedElement, textDiv);
             }
+            // 
             event.dataTransfer.clearData();
+
+            const dataArray = readData();
+            for (let i = 0; i < dataArray.length; i++) {
+                for (let j = 0; j < dataArray[i].items.length; j++) {
+                    if (dataArray[i].items[j].id === id) {
+
+                        const findObject = dataArray[i].items.find(a => a.id === id);
+                        const place = dataArray[i].items.indexOf(findObject);
+
+                        
+                        dataArray[i].items.splice(place, 1);
+
+                        if (dropzone.classList.contains('label')) {
+                            const textDiv = dropzone.parentNode;
+                            const column = textDiv.parentNode;
+                            /* console.log("släpper på", textDiv.id);
+                            console.log("släpp", id); */
+                            const findObject1 = dataArray[i].items.find(a => a.id === textDiv.id);
+                        /*     console.log("findObject", findObject);
+                            console.log("findObject1", findObject1); */
+                            const releaseOn = dataArray[i].items.indexOf(findObject1);
+                            const release = dataArray[i].items.indexOf(findObject);
+                            console.log("release", release);
+                            console.log("releaseOn", releaseOn);
+                            dropzone.id = column.id;
+                            
+                        }
+                    /*     console.log("j", j);
+                        console.log(dropzone);
+ */
+                        dataArray[dropzone.id].items.push(findObject);
+                       /*  console.log("place", place); */
+                        const dataString = JSON.stringify(dataArray);
+                        localStorage.setItem("kanbanData", dataString);
+
+                      /*   console.log(dropzone.id); */
+                    }
+                }
+            }
         }
     }
 }
